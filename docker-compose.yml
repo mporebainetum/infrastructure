@@ -19,22 +19,31 @@ services:
   rustapp:
     image: backend:latest
     container_name: rustapp_backend
+#    ports:
+#      - "8000:8000"
     env_file:
-      - ./.env
+      - ../api_to_automate/.env
     networks:
-      - app-network
+        app-network:
+          aliases:
+            - rustapp_backend
+
   rustapp_front:
     image: frontend:latest
     container_name: rustapp_front
+#    ports:
+#      - "80:80"
     networks:
-      - app-network
+       app-network:
+         aliases:
+           - rustapp_front
 
   web:
     image: nginx:latest
     volumes:
-      - ./infrastructure:/etc/nginx/nginx.conf
+      - /home/mpor@pl.impaq.corp/IdeaProjects/fullapp/infrastructure/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "8080:80"
+      - "80:80"
     environment:
       - NGINX_PORT=80
     networks:
